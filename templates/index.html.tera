@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snapmaker Status Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+        }
+        .card {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+        }
+        .progress-bar {
+            background: linear-gradient(to right, #4ade80, #22c55e);
+        }
+        .temp-bar {
+            background: linear-gradient(to right, #f97316, #ea580c);
+        }
+        .temp-target {
+            background-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- HTMX Status Update -->
+    <div hx-get="/render/status" hx-trigger="load, every 2s" hx-target="this" hx-swap="innerHTML""></div>
+    <div hx-get="/render/controls" hx-trigger="load" hx-target="this" hx-swap="innerHTML""></div>
+</body>
+</html>

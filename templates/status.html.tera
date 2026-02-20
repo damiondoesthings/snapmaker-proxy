@@ -1,0 +1,106 @@
+<div class="container mx-auto p-4">
+    <!-- Main Status Card -->
+    <div class="card rounded-lg p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Print Status -->
+            <div class="text-center">
+                <h3 class="text-sm text-gray-400 uppercase tracking-wide mb-2">Print Status</h3>
+                <div class="text-lg font-semibold">{{ status.print_status }}</div>
+                <div class="text-sm text-gray-400 mt-1">{{ status.file_name }}</div>
+            </div>
+
+            <!-- Progress -->
+            <div class="text-center">
+                <h3 class="text-sm text-gray-400 uppercase tracking-wide mb-2">Progress</h3>
+                <div class="text-lg font-semibold">{{ (status.progress * 100.0) | round(precision=2) }}%</div>
+                <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2">
+                    <div class="progress-bar h-2.5 rounded-full" style="width: {{ (status.progress * 100.0) | round(precision=2) }}%"></div>
+                </div>
+            </div>
+
+            <!-- Work Speed -->
+            <div class="text-center">
+                <h3 class="text-sm text-gray-400 uppercase tracking-wide mb-2">Work Speed</h3>
+                <div class="text-lg font-semibold">{{ (status.work_speed) | round(precision=2) }} mm/min</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side-by-Side: Temperatures & Position -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Temperature Card -->
+        <div class="card rounded-lg p-6 flex flex-col justify-between">
+            <h3 class="text-lg font-semibold mb-4 text-white">Temperatures</h3>
+            <div class="space-y-6">
+                <!-- Nozzle Temperature -->
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Nozzle</span>
+                    <span class="font-medium text-white">{{ status.nozzle_temperature | round(precision=2) }} / {{ status.nozzle_target_temperature | round(precision=2) }}°C</span>
+                </div>
+
+                <!-- Bed Temperature -->
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Bed</span>
+                    <span class="font-medium text-white">{{ status.heated_bed_temperature | round(precision=2) }} / {{ status.heated_bed_target_temperature | round(precision=2) }}°C</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Position Card -->
+        <div class="card rounded-lg p-6">
+            <h3 class="text-lg font-semibold mb-4 text-white">Position</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                    <span class="text-gray-400 uppercase text-xs">X Axis</span>
+                    <span class="font-bold text-white">{{ status.x | round(precision=2) }} <span class="text-xs font-normal text-gray-500 ml-1">mm</span></span>
+                </div>
+                <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                    <span class="text-gray-400 uppercase text-xs">Y Axis</span>
+                    <span class="font-bold text-white">{{ status.y | round(precision=2) }} <span class="text-xs font-normal text-gray-500 ml-1">mm</span></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400 uppercase text-xs">Z Axis</span>
+                    <span class="font-bold text-white">{{ status.z | round(precision=2) }} <span class="text-xs font-normal text-gray-500 ml-1">mm</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Row: Time Info & Controls -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Time Information Card -->
+        <div class="card rounded-lg p-6">
+            <h3 class="text-lg font-semibold mb-4 text-white">Time Information</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs text-gray-400 uppercase">Elapsed</span>
+                    <span class="font-semibold text-white">
+                        {% if status.elapsed_time < 60 %}{{ status.elapsed_time | round(precision=2) }}s
+                        {% elif status.elapsed_time < 3600 %}{{ (status.elapsed_time / 60) | round(method="floor") }}m {{ (status.elapsed_time % 60) | round(precision=2) }}s
+                        {% else %}{{ (status.elapsed_time / 3600) | round(method="floor") }}h {{ ((status.elapsed_time % 3600) / 60) | round(method="floor") }}m
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-xs text-gray-400 uppercase">Remaining</span>
+                    <span class="font-semibold text-white">
+                        {% if status.remaining_time < 60 %}{{ status.remaining_time | round(precision=2) }}s
+                        {% elif status.remaining_time < 3600 %}{{ (status.remaining_time / 60) | round(method="floor") }}m {{ (status.remaining_time % 60) | round(precision=2) }}s
+                        {% else %}{{ (status.remaining_time / 3600) | round(method="floor") }}h {{ ((status.remaining_time % 3600) / 60) | round(method="floor") }}m
+                        {% endif %}
+                    </span>
+                </div> 
+                <div class="flex justify-between items-center pt-2 border-t border-gray-700">
+                    <span class="text-xs text-gray-400 uppercase font-bold">Total</span>
+                    <span class="font-bold text-white">
+                        {% set total_time = status.elapsed_time + status.remaining_time %}
+                        {% if total_time < 60 %}{{ total_time | round(precision=2) }}s
+                        {% elif total_time < 3600 %}{{ (total_time / 60) | round(method="floor") }}m {{ (total_time % 60) | round(precision=2) }}s
+                        {% else %}{{ (total_time / 3600) | round(method="floor") }}h {{ ((total_time % 3600) / 60) | round(method="floor") }}m
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

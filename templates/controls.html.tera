@@ -1,0 +1,39 @@
+
+<div class="container mx-auto p-4">
+    <!-- Controls Card -->
+    <div class="card rounded-lg p-6">
+        <h3 class="text-lg font-semibold mb-4 text-white">Controls</h3>
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <button class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition" hx-post="/api/pause_print" hx-swap="none">
+                Pause
+            </button>
+            <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition" hx-post="/api/stop_print" hx-swap="none">
+                Stop
+            </button>
+            <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition" hx-post="/api/resume_print" hx-swap="none">
+                Resume
+            </button>
+        </div>
+        <div class="space-y-6">
+            <!-- Enclosure Light Intensity -->
+            <div class="flex flex-col space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Enclosure Light</span>
+                </div>
+                <input type="range" name="value" min="0" max="100" value="{{ status.enclosure.led }}"
+                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        hx-post="/api/enclosure/light" hx-trigger="change" hx-target="this">
+            </div>
+    
+            <!-- Enclosure Fan Speed -->
+            <div class="flex flex-col space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Enclosure Fan</span>
+                </div>
+                <input type="range" name="value" min="0" max="100" value="{{ status.enclosure.fan }}"
+                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        hx-post="/api/enclosure/fan" hx-trigger="change" hx-target="this">
+            </div>
+        </div>
+    </div>
+</div>
